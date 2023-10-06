@@ -9,12 +9,16 @@ body{
 
 button{
     font-size: 32px;
+    width: 100px;
+    height: 80px;
 }
 
 
 .display{
     font-size: 32px;
     justify-content: right;
+    align-items: center;
+    height: 70px;
 }
 
 div{
