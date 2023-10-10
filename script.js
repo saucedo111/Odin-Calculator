@@ -1,6 +1,9 @@
 let display = document.querySelector('.display');
 let displayValue = '';
 let buttons = document.querySelectorAll('button');
+let num1 = '';
+let num2 = '';
+let operator = '';
 
 function add(a, b) {
     return a + b;
@@ -34,26 +37,71 @@ function operate(operator, a, b) {
     }
 }
 
-function compute(str) {
-    let num1 = '';
-    let num2 = '';
-    let op = '';
-    let flag = false;
-    for (let char of str) {
-        if (char === '+' || char === '-' || char === '*' || char === '/') {
-            op = char;
-            flag = true;
+function helper(x) {
+    if (num1 !== "") {
+        if (num2 !== "" && operator !== "") {
+            displayValue = operate(operator, Number(num1), Number(num2));
+            num1 = displayValue;
+            num2 = '';
+            operator = x;
+            displayValue += x;
         } else {
-            if (flag === false) {
-                num1 += char;
-            } else {
-                num2 += char;
-            }
+            operator = x;
+            displayValue += x;
         }
     }
-    num1 = Number(num1);
-    num2 = Number(num2);
-    return operate(op, num1, num2);
+    updateDisplay();
+}
+
+function compute(e) {
+    switch (e.target.id) {
+        case 'clear':
+            displayValue = '';
+            num1 = '';
+            num2 = '';
+            operator = '';
+            updateDisplay();
+            break;
+
+        case '=':
+            if (num1 !== '' && num2 !== '' && operator !== '') {
+                displayValue = operate(operator, Number(num1), Number(num2));
+                num1 = displayValue;
+                num2 = '';
+                operator = '';
+            }
+            updateDisplay();
+            break;
+
+        case '+':
+            helper('+');
+            break;
+
+        case '-':
+            helper('-');
+            break;
+
+        case '*':
+            helper('*');
+            break;
+
+        case '/':
+            helper('/');
+            break;
+
+        default:
+            if (operator === '') {
+                num1 += e.target.id;
+            } else {
+                num2 += e.target.id;
+            }
+            displayValue += e.target.id;
+            updateDisplay();
+
+
+
+
+    }
 
 }
 
@@ -62,23 +110,8 @@ function updateDisplay() {
 }
 
 buttons.forEach((button) => {
-    if (button.id !== 'clear' && button.id !== '=') {
-        button.addEventListener('click', () => {
-            displayValue = displayValue + button.textContent;
-            updateDisplay();
-        })
-    }
-    if (button.id === 'clear') {
-        button.addEventListener('click', () => {
-            displayValue = '';
-            updateDisplay();
-        })
-    }
-    if (button.id === '=') {
-        button.addEventListener('click', () => {
-            displayValue = compute(displayValue);
-            updateDisplay();
-        })
-    }
+    button.addEventListener('click', (e) => {
+        compute(e);
+    })
 })
 
