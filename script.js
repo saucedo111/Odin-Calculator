@@ -19,7 +19,11 @@ function multiply(a, b) {
 
 function divide(a, b) {
     if (b === 0) {
-        return "Error: Cannot divide by zero";
+        let x = document.querySelector('#clear');
+        x.click();
+        alert("You can't divide by zero!");
+        return ' ';
+
     }
     return a / b;
 }
@@ -109,9 +113,19 @@ function updateDisplay() {
     display.textContent = displayValue;
 }
 
+function randomRGB() {
+    let r = Math.floor(Math.random() * 256);
+    let g = Math.floor(Math.random() * 256);
+    let b  = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
 buttons.forEach((button) => {
+    button.style.backgroundColor = randomRGB();
     button.addEventListener('click', (e) => {
         compute(e);
     })
 })
+
+
 
